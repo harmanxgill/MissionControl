@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --hud-bg: #060a0f;
+  --hud-surface: #0b1118;
+  --hud-border: #1a2840;
+  --hud-green: #00ff87;
+  --hud-amber: #ffb800;
+  --hud-red: #ff3a3a;
+  --hud-cyan: #38c8f0;
+  --hud-text: #8faabe;
+  --hud-dim: #2e4a5f;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes scanline-scroll {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+body {
+  background-color: var(--hud-bg);
+  color: var(--hud-text);
+  position: relative;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+}
+
+@layer components {
+  .hud-label {
+    @apply block text-xs uppercase tracking-widest text-hud-dim;
+    letter-spacing: 0.12em;
+  }
+
+  .hud-input {
+    @apply w-full bg-hud-bg border border-hud-border px-2 py-1.5 text-sm font-mono text-hud-text outline-none;
+    border-radius: 0;
+    transition: border-color 0.1s;
+  }
+
+  .hud-input:focus {
+    border-color: var(--hud-cyan);
+  }
+
+  .hud-input::placeholder {
+    color: var(--hud-dim);
+  }
+
+  .hud-panel {
+    @apply bg-hud-surface border border-hud-border;
+    border-radius: 0;
+  }
+
+  .hud-divider {
+    @apply flex items-center gap-2 w-full;
+    color: var(--hud-dim);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .hud-divider::before,
+  .hud-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: var(--hud-border);
+  }
+
+  .blink {
+    animation: blink 1s step-end infinite;
+  }
+}
